@@ -11,13 +11,13 @@ public interface PostService {
 
     List<Post> findAll();
 
-    Optional<Post> findById(int id);
+    Optional<Post> findById(long id);
 
     Post save(Post p);
 
-    Optional<Post> delete(int id);
+    void delete(long id);
 
-    Optional<Post> update(int id, Post p);
+    Optional<Post> update(long id, Post p);
 
     List<Post> findAllByAuthor(String author);
 
