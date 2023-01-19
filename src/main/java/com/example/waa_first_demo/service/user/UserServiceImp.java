@@ -56,8 +56,8 @@ public class UserServiceImp implements UserService {
         return posts.get();
     }
 
-    public List<User> findAllByPostsIsGreaterThan(long postsCountGreaterThan) {
-        return userRepo.findAllByPostsIsGreaterThan(postsCountGreaterThan);
+    public List<User> findByPosts_SizeGreaterThan(long postsCountGreaterThan) {
+        return userRepo.findByPosts_SizeGreaterThan(postsCountGreaterThan);
     }
 
 }

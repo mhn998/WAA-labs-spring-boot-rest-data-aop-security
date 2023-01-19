@@ -56,7 +56,7 @@ public class UserController {
     @GetMapping("filter")
     public List<User> findAllUserThatHaveMoreThanPosts(@RequestParam long postsCountGreaterThan){
         return userService
-                .findAllByPostsIsGreaterThan(postsCountGreaterThan);
+                .findByPosts_SizeGreaterThan(postsCountGreaterThan);
     }
 
 

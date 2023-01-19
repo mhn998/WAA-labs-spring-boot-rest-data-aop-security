@@ -18,4 +18,8 @@ public interface RDBMSUserRepo extends CrudRepository<User, Long> {
             "order by u.id;", nativeQuery = true)
     List<User> findAllByPostsIsGreaterThan(long count);
 
+
+    @Query("SELECT u FROM User u JOIN u.posts p GROUP BY u HAVING COUNT(p) > ?1")
+    List<User> findByPosts_SizeGreaterThan(long size);
+
 }

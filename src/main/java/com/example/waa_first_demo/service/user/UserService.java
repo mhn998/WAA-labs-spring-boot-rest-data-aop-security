@@ -20,6 +20,6 @@ public interface UserService {
 
     List<Post> findAllPostsByUserId(long id);
 
-    List<User> findAllByPostsIsGreaterThan(long postsCountGreaterThan);
+    List<User> findByPosts_SizeGreaterThan(long postsCountGreaterThan);
 
 }
