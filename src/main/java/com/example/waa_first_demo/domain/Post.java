@@ -1,27 +1,42 @@
 package com.example.waa_first_demo.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.List;
 
 @Data
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 @Entity // first step
+@RequiredArgsConstructor
 public class Post {
-
 
     // second step
     @Id
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue
     long id;
+
+    @NonNull
     String title;
+
+    @NonNull
     String content;
+
+    @NonNull
     String author;
 
-//    @ManyToOne
-//    User user;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonBackReference
+    User user;
+
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "post_id")
+    @JsonManagedReference
+    List<Comment> comments;
+
 
     public Post(Post post) {
         this.id = post.id;

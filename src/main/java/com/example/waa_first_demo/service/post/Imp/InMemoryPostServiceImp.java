@@ -47,5 +47,25 @@ public class InMemoryPostServiceImp implements PostService {
         return InMemoryPostRepo.findAllByAuthor(author);
     }
 
+    @Override
+    public List<Post> findAllPostWithTitle(String title) {
+        return null;
+    }
+
+    @Override
+    public List<Post> findAllPostsByUser(long userId) {
+        return null;
+    }
+
+    @Override
+    public Post findPostByUser(long userId, long postId) {
+        return null;
+    }
+
+    @Override
+    public Post savePostToUser(long userId, Post post) {
+        return null;
+    }
+
 
 }

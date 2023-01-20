@@ -21,4 +21,11 @@ public interface PostService {
 
     List<Post> findAllByAuthor(String author);
 
+    List<Post> findAllPostWithTitle(String title);
+
+    List<Post> findAllPostsByUser(long userId);
+
+    Post findPostByUser(long userId, long postId);
+
+    Post savePostToUser(long userId , Post post);
 }

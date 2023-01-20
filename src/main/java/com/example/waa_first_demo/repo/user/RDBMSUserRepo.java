@@ -2,6 +2,7 @@ package com.example.waa_first_demo.repo.user;
 
 import com.example.waa_first_demo.domain.Post;
 import com.example.waa_first_demo.domain.User;
+import lombok.NonNull;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -21,5 +22,7 @@ public interface RDBMSUserRepo extends CrudRepository<User, Long> {
 
     @Query("SELECT u FROM User u JOIN u.posts p GROUP BY u HAVING COUNT(p) > ?1")
     List<User> findByPosts_SizeGreaterThan(long size);
+
+    List<User> findAllByPosts_TitleEquals(@NonNull String posts_title);
 
 }

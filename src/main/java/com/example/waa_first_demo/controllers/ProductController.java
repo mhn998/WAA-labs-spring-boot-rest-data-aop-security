@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController // Injects @RequestBody to each method
-@RequestMapping("products")
+@RequestMapping("api/v1/products")
 @AllArgsConstructor
 public class ProductController {
 

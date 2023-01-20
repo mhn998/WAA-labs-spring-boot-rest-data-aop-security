@@ -30,10 +30,10 @@ public class Configuration {
     CommandLineRunner commandLineRunner() {
         return args -> {
             System.out.println("Hey");
-            Post p1 = new Post(1,"Test","This is test 1","Muhannad");
-            Post p2 = new Post(2,"Test 2","This is test 2","Mugh");
-            Post p3 = new Post(3,"Test 3","This is test 3","Ameer");
-            Post p4 = new Post(4,"Test 4","This is test 4","Mohammad");
+            Post p1 = new Post("Test","This is test 1","Muhannad");
+            Post p2 = new Post("Test 2","This is test 2","Mugh");
+            Post p3 = new Post("Test 3","This is test 3","Ameer");
+            Post p4 = new Post("Test 4","This is test 4","Mohammad");
             List<Post> posts1 = new ArrayList<>() {{
                 add(p1);
                 add(p2);

@@ -10,7 +10,7 @@ public interface UserService {
 
     List<User> findAll();
 
-    Optional<User> findById(long id);
+    User findById(long id);
 
     User save(User p);
 
@@ -21,5 +21,7 @@ public interface UserService {
     List<Post> findAllPostsByUserId(long id);
 
     List<User> findByPosts_SizeGreaterThan(long postsCountGreaterThan);
+
+    List<User> findByPostsTitle(String title);
 
 }
