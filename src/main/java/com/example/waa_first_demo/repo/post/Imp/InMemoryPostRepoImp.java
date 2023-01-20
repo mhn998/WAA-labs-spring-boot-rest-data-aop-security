@@ -1,13 +1,16 @@
-package com.example.waa_first_demo.repo.post;
+package com.example.waa_first_demo.repo.post.Imp;
 
 import com.example.waa_first_demo.domain.Post;
+import com.example.waa_first_demo.repo.post.PostRepo;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Repository
-public class PostRepoImp implements PostRepo{
+@Profile("in-memory")
+public class InMemoryPostRepoImp implements PostRepo {
 
     private static ArrayList<Post> posts;
     static {
@@ -28,7 +31,7 @@ public class PostRepoImp implements PostRepo{
     }
 
     @Override
-    public Optional<Post> findById(int id) {
+    public Optional<Post> findById(long id) {
         return posts.stream().filter(post -> post.getId() == id).findFirst();
     }
 
@@ -39,14 +42,13 @@ public class PostRepoImp implements PostRepo{
     }
 
     @Override
-    public Optional<Post> delete(int id) {
+    public void deleteById(long id) {
         Optional<Post> toBeDeleted = posts.stream().filter(post -> post.getId() == id).findFirst();
         toBeDeleted.ifPresent(post -> posts.remove(post));
-        return toBeDeleted;
     }
 
     @Override
-    public Optional<Post> update(int id, Post p) {
+    public Optional<Post> update(long id, Post p) {
         Optional<Post> toBeUpdated = posts.stream().filter(post -> post.getId() == id).findFirst();
         toBeUpdated.ifPresent(post -> {
             post.setPost(p);
@@ -59,6 +61,8 @@ public class PostRepoImp implements PostRepo{
     public List<Post> findAllByAuthor(String author) {
         return posts.stream().filter(post -> post.getAuthor().equals(author)).collect(Collectors.toList());
     }
+
+
 
 
 }

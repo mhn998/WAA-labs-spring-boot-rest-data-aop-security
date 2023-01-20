@@ -37,8 +37,8 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public Post delete(@PathVariable int id) {
-        return postService.delete(id).orElseThrow();
+    public void delete(@PathVariable int id) {
+         postService.delete(id);
     }
 
     @PutMapping("/{id}")
@@ -54,5 +54,8 @@ public class PostController {
     public List<PostV2> mapToPostV2(List<Post> posts) {
         return posts.stream().map(post -> modelMapper.map(post, PostV2.class)).collect(Collectors.toList());
     }
+
+
+
 
 }
