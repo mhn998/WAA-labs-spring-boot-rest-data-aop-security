@@ -14,4 +14,8 @@ public class HelloController {
         return "Welcome back Spring!";
     }
 
+    public static void main(String[] args) {
+        // this is created for demo purposes!
+    }
+
 }

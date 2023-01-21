@@ -21,4 +21,6 @@ public interface RDBMSPostRepo extends CrudRepository<Post, Long> {
     @Query("SELECT p FROM Post p JOIN p.user u where p.id = ?2 AND u.id = ?1")
     Post findByPost_IdEquals(long userId, long postId);
 
+    List<Post> findAllByAuthorEquals(@NonNull String author);
+
 }

@@ -2,11 +2,8 @@ package com.example.waa_first_demo.service.comment;
 
 import com.example.waa_first_demo.domain.Comment;
 import com.example.waa_first_demo.domain.Post;
-import com.example.waa_first_demo.domain.User;
 import com.example.waa_first_demo.repo.comment.CommentRepo;
 import com.example.waa_first_demo.repo.post.Imp.RDBMSPostRepo;
-import com.example.waa_first_demo.repo.post.PostRepo;
-import com.example.waa_first_demo.repo.user.UserRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

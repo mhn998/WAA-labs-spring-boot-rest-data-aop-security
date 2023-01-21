@@ -28,13 +28,13 @@ public class UserServiceImp implements UserService {
     }
 
     public User findById(long id) {
-//        System.out.println("userRepo.findById(id).get() = " + userRepo.findById(id).get());
         User user = entityManager.find(User.class, id);
-//        entityManager.detach(user);
+        if(user == null) throw new RuntimeException("User not found!");
+        entityManager.detach(user);
         User u = new User();
         u.setId(user.getId());
         u.setName(user.getName());
-//        System.out.println("user = " + user);
+        System.out.println("user = " + user);
         return u;
     }
 

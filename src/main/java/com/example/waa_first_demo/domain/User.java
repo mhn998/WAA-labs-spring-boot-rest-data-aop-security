@@ -1,7 +1,5 @@
 package com.example.waa_first_demo.domain;
 
-import com.example.waa_first_demo.repo.user.UserRepo;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -45,6 +43,15 @@ public class User {
         this.id = user.id;
         this.name = user.name;
         this.posts = user.posts;
+    }
+
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 
 }

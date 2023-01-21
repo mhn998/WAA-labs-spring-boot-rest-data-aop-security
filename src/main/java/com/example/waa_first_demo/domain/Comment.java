@@ -23,4 +23,12 @@ public class Comment {
     @JsonBackReference
     Post post;
 
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
 }
