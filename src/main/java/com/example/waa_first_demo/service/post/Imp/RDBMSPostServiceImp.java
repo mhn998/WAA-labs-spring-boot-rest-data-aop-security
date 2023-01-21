@@ -32,6 +32,14 @@ public class RDBMSPostServiceImp implements PostService {
         return rdbmsPostRepo.save(post);
     }
 
+    public Post savePostToUser(long userId , Post post) {
+        List<Post> userPosts = rdbmsPostRepo.findAllByUserId(userId);
+        rdbmsPostRepo.save(post);
+        userPosts.add(post);
+
+        return userPosts.get(userPosts.size() - 1);
+    }
+
     public Optional<Post> update(long id, Post post) {
         Optional<Post> byId = rdbmsPostRepo.findById(id);
         byId.ifPresent((p) -> {
@@ -52,4 +60,20 @@ public class RDBMSPostServiceImp implements PostService {
     public List<Post> findAllByAuthor(String author) {
         return null;
     }
+
+    @Override
+    public List<Post> findAllPostWithTitle(String title) {
+        return rdbmsPostRepo.findAllByTitleEqualsIgnoreCase(title);
+    }
+
+    @Override
+    public List<Post> findAllPostsByUser(long userId) {
+        return rdbmsPostRepo.findAllByUserId(userId);
+    }
+
+    @Override
+    public Post findPostByUser(long userId, long postId) {
+        return rdbmsPostRepo.findByPost_IdEquals(userId, postId);
+    }
+
 }

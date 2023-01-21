@@ -6,15 +6,18 @@ import com.example.waa_first_demo.domain.User;
 import com.example.waa_first_demo.service.user.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("api/v1/users")
 @AllArgsConstructor
 public class UserController {
 
     private UserService userService;
+
+//    private RestTemplate restTemplate;
 
     @GetMapping
     public List<User> findAll(){
@@ -23,13 +26,14 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public User findById(@PathVariable int id){
+    public User findById(@PathVariable long id){
         return userService
-                .findById(id).orElseThrow();
+                .findById(id);
     }
 
     @PostMapping
-    public User save(User user) {
+    public User save(@RequestBody User user) {
+        System.out.println("hello<!>");
         return userService
                 .save(user);
     }
@@ -41,25 +45,23 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public User updateUser(@PathVariable int id, @RequestBody User post) {
+    public User updateUser(@PathVariable int id, @RequestBody User user) {
         return userService
-                .update(id, post).orElseThrow();
+                .update(id, user).orElseThrow();
     }
 
-
-    @GetMapping("/{id}/posts")
-    public List<Post> findAllPostsByUser(@PathVariable long id){
-        return userService
-                .findAllPostsByUserId(id);
-    }
 
     @GetMapping("filter")
-    public List<User> findAllUserThatHaveMoreThanPosts(@RequestParam long postsCountGreaterThan){
-        return userService
+    public List<User> findAllUserThatHaveMoreThanPosts(@RequestParam Long postsCountGreaterThan){
+            return userService
                 .findByPosts_SizeGreaterThan(postsCountGreaterThan);
     }
 
-
+    @GetMapping("filterPostTitle")
+    public List<User> findAllUsersWithPostTitle(@RequestParam String postTitle){
+        return  userService
+                .findByPostsTitle(postTitle);
+    }
 
 
 }

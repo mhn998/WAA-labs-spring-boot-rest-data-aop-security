@@ -3,6 +3,7 @@ package com.example.waa_first_demo.service.user;
 import com.example.waa_first_demo.domain.Post;
 import com.example.waa_first_demo.domain.User;
 import com.example.waa_first_demo.repo.user.RDBMSUserRepo;
+import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,16 +18,24 @@ import java.util.stream.StreamSupport;
 @AllArgsConstructor
 public class UserServiceImp implements UserService {
 
+    EntityManager entityManager;
+
     private RDBMSUserRepo userRepo;
-//    private RDBMSPostRepo postRepo;
 
     public List<User> findAll() {
         return StreamSupport.stream(userRepo.findAll().spliterator(), false)
                 .collect(Collectors.toList());
     }
 
-    public Optional<User> findById(long id) {
-        return userRepo.findById(id);
+    public User findById(long id) {
+//        System.out.println("userRepo.findById(id).get() = " + userRepo.findById(id).get());
+        User user = entityManager.find(User.class, id);
+//        entityManager.detach(user);
+        User u = new User();
+        u.setId(user.getId());
+        u.setName(user.getName());
+//        System.out.println("user = " + user);
+        return u;
     }
 
     public User save(User p) {
@@ -47,6 +56,7 @@ public class UserServiceImp implements UserService {
     }
 
     public List<Post> findAllPostsByUserId(long id) {
+//        User user1 = entityManager.find(User.class, id);
         Optional<User> byId = userRepo.findById(id);
         AtomicReference<List<Post>> posts = new AtomicReference<>();
         byId.ifPresent((user) -> {
@@ -58,6 +68,11 @@ public class UserServiceImp implements UserService {
 
     public List<User> findByPosts_SizeGreaterThan(long postsCountGreaterThan) {
         return userRepo.findByPosts_SizeGreaterThan(postsCountGreaterThan);
+    }
+
+    @Override
+    public List<User> findByPostsTitle(String title) {
+        return userRepo.findAllByPosts_TitleEquals(title);
     }
 
 }
