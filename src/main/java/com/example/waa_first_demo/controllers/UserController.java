@@ -12,6 +12,8 @@ import com.example.waa_first_demo.service.post.PostService;
 import com.example.waa_first_demo.service.user.UserService;
 import com.example.waa_first_demo.util.Util;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -126,6 +128,12 @@ public class UserController {
     public CommentDTO findAllCommentsOnPost(@PathVariable long userId, @PathVariable long postId, @PathVariable long commentId) {
         Comment comment = commentService.findComment(userId, postId, commentId);
         return Util.mapTo(comment, CommentDTO.class);
+    }
+
+    // new localhost:8080/api/v1/users/search?pageSize=6&pageNo=0; pagination starts from 0
+    @GetMapping("search")
+    public Page<UserDTO> loadUsers(@RequestParam Integer pageNo, @RequestParam Integer pageSize) {
+        return userService.loadAll(PageRequest.of(pageNo, pageSize)).map(user -> Util.mapTo(user, UserDTO.class));
     }
 
 }

@@ -6,21 +6,21 @@ import com.example.waa_first_demo.domain.dao.UserEntity;
 import com.example.waa_first_demo.repo.user.UserRepo;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 
 @Service
 @AllArgsConstructor
-public class UserServiceImp implements UserService {
+class UserServiceImp implements UserService {
 
     // here in the service the data persistence methods that is allowed to use only what is provided by userRepo, not the whole spring implementation of Crud
+    // service implementation is decoupled and defined as private-package
     EntityManager entityManager;
 
     private UserRepo userRepo;
@@ -75,6 +75,11 @@ public class UserServiceImp implements UserService {
     @Override
     public List<User> findByPostsTitle(String title) {
         return userRepo.findByPostsTitle(title);
+    }
+
+    @Override
+    public Page<User> loadAll(Pageable pageable) {
+        return userRepo.loadUsers(pageable);
     }
 
 }

@@ -5,7 +5,9 @@ import com.example.waa_first_demo.domain.User;
 import com.example.waa_first_demo.domain.dao.UserEntity;
 import com.example.waa_first_demo.util.Util;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,9 +18,12 @@ import java.util.stream.StreamSupport;
 
 @Repository
 @AllArgsConstructor
-public class UserRepoCrudImp implements UserRepo {
+class UserRepoCrudImp implements UserRepo {
 
-    private final RDBMSCrudSpringUserRepoImp rdbmsCrudSpringUserRepoImp;
+    // here for user we are completely decoupled from implementation, so I can make the class private-package not public
+
+    private final RDBMSCrudSpringUserRepoImp rdbmsCrudSpringUserRepoImp; // to help me with data
+    private final UserRepoSpringJPAImp userRepoSpringJPAImp; // to help me with pagination
 
     @Override
     public List<User> findAll() {
@@ -76,5 +81,10 @@ public class UserRepoCrudImp implements UserRepo {
     @Override
     public List<User> findByPostsTitle(String title) {
         return Util.mapToListOf(rdbmsCrudSpringUserRepoImp.findAllByPosts_TitleEquals(title), User.class);
+    }
+
+    @Override
+    public Page<User> loadUsers(Pageable pageable) {
+        return userRepoSpringJPAImp.findAll(pageable).map((p) -> Util.mapTo(p, User.class));
     }
 }

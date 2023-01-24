@@ -10,7 +10,9 @@ import java.util.List;
 
 
 @Repository //not necessary
-public interface RDBMSCrudSpringUserRepoImp extends CrudRepository<UserEntity, Long> {
+interface RDBMSCrudSpringUserRepoImp extends CrudRepository<UserEntity, Long> {
+
+    // decoupled and remove public access modifier
 
     @Query(value = "SELECT * from users u \n" +
             "where (select count(*) from post p \n" +

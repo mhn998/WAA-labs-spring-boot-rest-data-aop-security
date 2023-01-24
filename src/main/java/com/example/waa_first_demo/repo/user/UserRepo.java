@@ -2,6 +2,8 @@ package com.example.waa_first_demo.repo.user;
 
 import com.example.waa_first_demo.domain.Post;
 import com.example.waa_first_demo.domain.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,4 +25,6 @@ public interface UserRepo {
     List<User> findByPosts_SizeGreaterThan(long postsCountGreaterThan);
 
     List<User> findByPostsTitle(String title);
+
+    Page<User> loadUsers(Pageable pageable);
 }

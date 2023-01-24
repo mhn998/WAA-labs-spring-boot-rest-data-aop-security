@@ -3,7 +3,6 @@ package com.example.waa_first_demo.service.post.Imp;
 import com.example.waa_first_demo.domain.Post;
 import com.example.waa_first_demo.domain.User;
 import com.example.waa_first_demo.repo.post.Imp.RDBMSPostRepo;
-import com.example.waa_first_demo.repo.user.RDBMSCrudSpringUserRepoImp;
 import com.example.waa_first_demo.repo.user.UserRepo;
 import com.example.waa_first_demo.service.post.PostService;
 import lombok.AllArgsConstructor;
