@@ -3,7 +3,8 @@ package com.example.waa_first_demo.service.post.Imp;
 import com.example.waa_first_demo.domain.Post;
 import com.example.waa_first_demo.domain.User;
 import com.example.waa_first_demo.repo.post.Imp.RDBMSPostRepo;
-import com.example.waa_first_demo.repo.user.RDBMSUserRepo;
+import com.example.waa_first_demo.repo.user.RDBMSCrudSpringUserRepoImp;
+import com.example.waa_first_demo.repo.user.UserRepo;
 import com.example.waa_first_demo.service.post.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -19,7 +20,7 @@ import java.util.stream.StreamSupport;
 public class RDBMSPostServiceImp implements PostService {
 
     private RDBMSPostRepo rdbmsPostRepo;
-    private RDBMSUserRepo rdbmsUserRepo;
+    private UserRepo rdbmsCrudSpringUserRepoImp;
 
     public List<Post> findAll() {
         return StreamSupport.stream(rdbmsPostRepo.findAll().spliterator(), false)
@@ -36,10 +37,10 @@ public class RDBMSPostServiceImp implements PostService {
     }
 
     public Post savePostToUser(long userId , Post post) {
-        User userById = rdbmsUserRepo.findById(userId).orElseThrow();
+        User userById = rdbmsCrudSpringUserRepoImp.findById(userId).orElseThrow();
         userById.getPosts().add(post);
         rdbmsPostRepo.save(post);
-        rdbmsUserRepo.save(userById);
+        rdbmsCrudSpringUserRepoImp.save(userById);
 
         return post;
     }

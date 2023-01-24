@@ -2,11 +2,13 @@ package com.example.waa_first_demo.service.user;
 
 import com.example.waa_first_demo.domain.Post;
 import com.example.waa_first_demo.domain.User;
-import com.example.waa_first_demo.repo.user.RDBMSUserRepo;
+import com.example.waa_first_demo.domain.dao.UserEntity;
+import com.example.waa_first_demo.repo.user.UserRepo;
 import jakarta.persistence.EntityManager;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
@@ -18,17 +20,17 @@ import java.util.stream.StreamSupport;
 @AllArgsConstructor
 public class UserServiceImp implements UserService {
 
+    // here in the service the data persistence methods that is allowed to use only what is provided by userRepo, not the whole spring implementation of Crud
     EntityManager entityManager;
 
-    private RDBMSUserRepo userRepo;
+    private UserRepo userRepo;
 
     public List<User> findAll() {
-        return StreamSupport.stream(userRepo.findAll().spliterator(), false)
-                .collect(Collectors.toList());
+        return userRepo.findAll();
     }
 
     public User findById(long id) {
-        User user = entityManager.find(User.class, id);
+        UserEntity user = entityManager.find(UserEntity.class, id); // just for demo service should not talk to entity manager directly
         if(user == null) throw new RuntimeException("User not found!");
         entityManager.detach(user);
         User u = new User();
@@ -38,12 +40,12 @@ public class UserServiceImp implements UserService {
         return u;
     }
 
-    public User save(User p) {
-        return userRepo.save(p);
+    public User save(User user) {
+        return userRepo.save(user);
     }
 
     public void delete(long id) {
-         userRepo.deleteById(id);
+         userRepo.delete(id);
     }
 
     public Optional<User> update(long id, User u) {
@@ -72,7 +74,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public List<User> findByPostsTitle(String title) {
-        return userRepo.findAllByPosts_TitleEquals(title);
+        return userRepo.findByPostsTitle(title);
     }
 
 }

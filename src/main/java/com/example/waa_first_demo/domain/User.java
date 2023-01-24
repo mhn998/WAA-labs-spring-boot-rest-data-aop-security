@@ -10,8 +10,6 @@ import java.util.List;
 
 
 @Data
-@Entity
-@Table(name = "users")
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
@@ -25,7 +23,6 @@ public class User {
     @OneToMany(cascade = CascadeType.REMOVE)
     @Fetch(value = FetchMode.JOIN)
     @JoinColumn(name = "user_id")
-    @JsonManagedReference
     List<Post> posts;
 
     public User(User user) {

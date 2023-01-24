@@ -1,10 +1,10 @@
 package com.example.waa_first_demo.domain;
 
+import com.example.waa_first_demo.domain.dao.UserEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.List;
 
 @Data
@@ -30,7 +30,7 @@ public class Post {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference
-    User user;
+    UserEntity user;
 
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "post_id")

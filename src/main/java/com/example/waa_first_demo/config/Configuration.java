@@ -4,7 +4,8 @@ package com.example.waa_first_demo.config;
 import com.example.waa_first_demo.domain.Post;
 import com.example.waa_first_demo.domain.User;
 import com.example.waa_first_demo.repo.post.Imp.RDBMSPostRepo;
-import com.example.waa_first_demo.repo.user.RDBMSUserRepo;
+import com.example.waa_first_demo.repo.user.RDBMSCrudSpringUserRepoImp;
+import com.example.waa_first_demo.repo.user.UserRepo;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +19,7 @@ public class Configuration {
 
 
     RDBMSPostRepo rdbmsPostRepo;
-    RDBMSUserRepo rdbmsUserRepo;
+    UserRepo rdbmsCrudSpringUserRepoImp;
 
     @Bean
     public ModelMapper modelMapper() {
@@ -50,12 +51,12 @@ public class Configuration {
             User user1 = new User(1, "Muhannad");
 //            user1.setPosts(posts1);
 
-            rdbmsUserRepo.save(user1);
+            rdbmsCrudSpringUserRepoImp.save(user1);
 
             User user2 = new User(2,"Mahmoud");
 //            user2.setPosts(posts2);
 
-            rdbmsUserRepo.save(user2);
+            rdbmsCrudSpringUserRepoImp.save(user2);
         };
     }
 
