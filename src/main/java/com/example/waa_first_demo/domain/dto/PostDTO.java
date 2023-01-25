@@ -9,8 +9,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostDTO {
     long id;
+
     String title;
+
     String content;
+
+    private long postCharactersLength;
+
+    private String device;
 
 }
 

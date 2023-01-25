@@ -17,16 +17,20 @@ public class Post {
     // second step
     @Id
     @GeneratedValue
-    long id;
+    private long id;
 
     @NonNull
-    String title;
+    private String title;
 
     @NonNull
-    String content;
+    private String content;
 
     @NonNull
-    String author;
+    private String author;
+
+    private long postCharactersLength;
+
+    private String device;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference

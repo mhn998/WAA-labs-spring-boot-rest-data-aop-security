@@ -1,5 +1,6 @@
 package com.example.waa_first_demo.service.user;
 
+import com.example.waa_first_demo.domain.Address;
 import com.example.waa_first_demo.domain.Post;
 import com.example.waa_first_demo.domain.User;
 import org.springframework.data.domain.Page;
@@ -27,6 +28,13 @@ public interface UserService {
     List<User> findByPostsTitle(String title);
 
     Page<User> loadAll(Pageable pageable);
+
+    Address createAddress(long id, Address address);
+
+    List<User> findHavingPostsGreaterThanOneBy(long postsCount, String state);
+
+    // use criteriaQuery to filter posts on specific user which title contains __ and postLength >= ___ and device __
+    List<Post> findAllPostsByUserOnCriteria(long id , String title, long postLength, String device);
 
 
 }

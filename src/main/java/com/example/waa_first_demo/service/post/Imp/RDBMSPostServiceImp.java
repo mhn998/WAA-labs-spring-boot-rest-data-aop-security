@@ -18,8 +18,8 @@ import java.util.stream.StreamSupport;
 @Profile("rdbms")
 public class RDBMSPostServiceImp implements PostService {
 
-    private RDBMSPostRepo rdbmsPostRepo;
-    private UserRepo rdbmsCrudSpringUserRepoImp;
+    private RDBMSPostRepo rdbmsPostRepo; // coding to an implementation direct here is not best practice
+    private UserRepo userRepo;
 
     public List<Post> findAll() {
         return StreamSupport.stream(rdbmsPostRepo.findAll().spliterator(), false)
@@ -36,12 +36,23 @@ public class RDBMSPostServiceImp implements PostService {
     }
 
     public Post savePostToUser(long userId , Post post) {
-        User userById = rdbmsCrudSpringUserRepoImp.findById(userId).orElseThrow();
+        User userById = userRepo.findById(userId).orElseThrow();
         userById.getPosts().add(post);
         rdbmsPostRepo.save(post);
-        rdbmsCrudSpringUserRepoImp.save(userById);
+        userRepo.save(userById);
 
         return post;
+    }
+
+    @Override
+    public Post updatePostToUser(long userId, long postId, Post post) {
+        Post postForUser = rdbmsPostRepo.findByPost_IdEquals(userId, postId);
+
+        postForUser.setPost(post);
+
+        rdbmsPostRepo.save(postForUser);
+
+        return postForUser;
     }
 
     public Optional<Post> update(long id, Post post) {
@@ -79,5 +90,7 @@ public class RDBMSPostServiceImp implements PostService {
     public Post findPostByUser(long userId, long postId) {
         return rdbmsPostRepo.findByPost_IdEquals(userId, postId);
     }
+
+
 
 }

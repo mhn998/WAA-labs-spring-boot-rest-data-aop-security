@@ -14,16 +14,15 @@ import java.util.List;
 @AllArgsConstructor
 public class User {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
 //    @NonNull
     private String name;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
-    @Fetch(value = FetchMode.JOIN)
-    @JoinColumn(name = "user_id")
     List<Post> posts;
+
+    Address address;
 
     public User(User user) {
         this.id = user.id;

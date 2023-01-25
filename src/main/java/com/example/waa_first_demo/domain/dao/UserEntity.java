@@ -1,5 +1,6 @@
 package com.example.waa_first_demo.domain.dao;
 
+import com.example.waa_first_demo.domain.Address;
 import com.example.waa_first_demo.domain.Post;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
@@ -23,10 +24,16 @@ public class UserEntity {
     //    @NonNull
     private String name;
 
+
     @OneToMany(cascade = CascadeType.REMOVE)
     @Fetch(value = FetchMode.JOIN)
     @JoinColumn(name = "user_id")
     @JsonManagedReference
     List<Post> posts;
+
+    @OneToOne(mappedBy = "user")
+    @JsonManagedReference
+    Address address;
+
 
 }

@@ -1,9 +1,11 @@
 package com.example.waa_first_demo.controllers;
 
 
+import com.example.waa_first_demo.domain.Address;
 import com.example.waa_first_demo.domain.Comment;
 import com.example.waa_first_demo.domain.Post;
 import com.example.waa_first_demo.domain.User;
+import com.example.waa_first_demo.domain.dto.AddressDTO;
 import com.example.waa_first_demo.domain.dto.CommentDTO;
 import com.example.waa_first_demo.domain.dto.PostDTO;
 import com.example.waa_first_demo.domain.dto.UserDTO;
@@ -26,6 +28,7 @@ public class UserController {
     private UserService userService;
     private PostService postService;
     private CommentService commentService;
+
 
 //    private RestTemplate restTemplate;
 
@@ -68,13 +71,29 @@ public class UserController {
     }
 
 
-    @GetMapping("filter")
-    public List<UserDTO> findAllUserThatHaveMoreThanPosts(@RequestParam Long postsCountGreaterThan){
-        List<User> usersByPostsCountGreaterThan = userService
-                .findByPosts_SizeGreaterThan(postsCountGreaterThan);
 
-        return Util.mapToListOf(usersByPostsCountGreaterThan, UserDTO.class);
+    // if you add @Request param to a method it is by default required=true, so if you don't supply it, it won't identify a mapper for the request, to overcome and provide choices of filtering add required false
+    @GetMapping("filter")
+    public List<UserDTO> findAllUserThatHaveMoreThanPosts(@RequestParam(defaultValue = "1") Long postsCountGreaterThan, @RequestParam(required = false) String state){
+        // will filter on users having more than a post by default; if the state provided will filter on it as well
+        List<User> usersByPostsCountGreaterThanOne;
+        if(state != null) {
+            usersByPostsCountGreaterThanOne = userService.findHavingPostsGreaterThanOneBy(postsCountGreaterThan, state);
+        } else {
+            usersByPostsCountGreaterThanOne = userService
+                    .findByPosts_SizeGreaterThan(postsCountGreaterThan);
+        }
+
+        return Util.mapToListOf(usersByPostsCountGreaterThanOne, UserDTO.class);
     }
+
+//    @GetMapping("filterBy")
+//    public List<UserDTO> findHavingMoreThanOnePostBy(@RequestParam Long postsCountGreaterThan){
+//        List<User> usersByPostsCountGreaterThan = userService
+//                .findByPosts_SizeGreaterThan(postsCountGreaterThan);
+//
+//        return Util.mapToListOf(usersByPostsCountGreaterThan, UserDTO.class);
+//    }
 
     @GetMapping("filterPostTitle")
     public List<UserDTO> findAllUsersWithPostTitle(@RequestParam String postTitle){
@@ -92,6 +111,17 @@ public class UserController {
         return Util.mapToListOf(allPostsByUser, PostDTO.class);
     }
 
+    @GetMapping("/{userId}/posts/filter")
+    public List<PostDTO> findAllByUserOnCriteria
+            (@PathVariable long userId,
+             @RequestParam String titleContains,
+             @RequestParam Long postContentCharacterLength,
+             @RequestParam String device){
+
+        return Util.mapToListOf(userService.findAllPostsByUserOnCriteria(userId, titleContains, postContentCharacterLength, device), PostDTO.class);
+
+    }
+
     @GetMapping("{userId}/posts/{postId}")
     public PostDTO findPostById(@PathVariable long userId,
                              @PathVariable long postId ){
@@ -102,7 +132,13 @@ public class UserController {
     }
 
     @PostMapping("{userId}/posts")
-    public PostDTO save(@PathVariable long userId, @RequestBody Post post) {
+    public PostDTO savePostToUser(@PathVariable long userId, @RequestBody Post post) {
+        Post postSaved = postService.savePostToUser(userId, post);
+        return Util.mapTo(postSaved, PostDTO.class);
+    }
+
+    @PutMapping("{userId}/posts")
+    public PostDTO updatePostToUser(@PathVariable long userId, @RequestBody Post post) {
         Post postSaved = postService.savePostToUser(userId, post);
         return Util.mapTo(postSaved, PostDTO.class);
     }
@@ -136,4 +172,14 @@ public class UserController {
         return userService.loadAll(PageRequest.of(pageNo, pageSize)).map(user -> Util.mapTo(user, UserDTO.class));
     }
 
+
+    // Address for user
+    @PostMapping("{id}/address")
+    AddressDTO createAddress (@PathVariable long id, @RequestBody Address address) {
+        return Util.mapTo(userService.createAddress(id, address), AddressDTO.class);
+    }
+
 }
+
+
+

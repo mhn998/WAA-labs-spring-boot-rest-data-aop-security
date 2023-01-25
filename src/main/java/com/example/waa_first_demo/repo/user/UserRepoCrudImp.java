@@ -87,4 +87,10 @@ class UserRepoCrudImp implements UserRepo {
     public Page<User> loadUsers(Pageable pageable) {
         return userRepoSpringJPAImp.findAll(pageable).map((p) -> Util.mapTo(p, User.class));
     }
+
+    @Override
+    public List<User> findHavingPostsGreaterThanOneBy(long size, String state) {
+        return Util.mapToListOf(rdbmsCrudSpringUserRepoImp.findHavingPostsGreaterThanOneBy(size, state), User.class);
+    }
+
 }
