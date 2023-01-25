@@ -30,5 +30,7 @@ public interface UserRepo {
 
     List<User> findHavingPostsGreaterThanOneBy(long size, String state);
 
+    List<Post> findAllPostsByUserOnCriteria(long id , String title, long postLength, String device);
+
 
 }
