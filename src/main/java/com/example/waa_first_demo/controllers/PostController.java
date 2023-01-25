@@ -3,7 +3,6 @@ package com.example.waa_first_demo.controllers;
 
 import com.example.waa_first_demo.domain.Post;
 import com.example.waa_first_demo.domain.dto.PostDTO;
-import com.example.waa_first_demo.service.comment.CommentService;
 import com.example.waa_first_demo.service.post.PostService;
 import com.example.waa_first_demo.util.Util;
 import lombok.AllArgsConstructor;

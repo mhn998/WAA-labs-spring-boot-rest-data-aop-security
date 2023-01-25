@@ -1,7 +1,6 @@
 package com.example.waa_first_demo.service.comment;
 
 import com.example.waa_first_demo.domain.Comment;
-import com.example.waa_first_demo.domain.Post;
 
 import java.util.List;
 import java.util.Optional;

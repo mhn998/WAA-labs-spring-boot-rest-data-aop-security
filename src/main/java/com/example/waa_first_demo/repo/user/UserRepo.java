@@ -2,10 +2,8 @@ package com.example.waa_first_demo.repo.user;
 
 import com.example.waa_first_demo.domain.Post;
 import com.example.waa_first_demo.domain.User;
-import com.example.waa_first_demo.domain.dao.UserEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,5 +29,6 @@ public interface UserRepo {
     Page<User> loadUsers(Pageable pageable);
 
     List<User> findHavingPostsGreaterThanOneBy(long size, String state);
+
 
 }

@@ -2,7 +2,6 @@ package com.example.waa_first_demo.repo.user;
 
 import com.example.waa_first_demo.domain.dao.UserEntity;
 import lombok.NonNull;
-import org.hibernate.annotations.Parameter;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

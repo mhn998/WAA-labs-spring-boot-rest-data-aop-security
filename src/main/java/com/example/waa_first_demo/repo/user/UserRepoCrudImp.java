@@ -5,7 +5,6 @@ import com.example.waa_first_demo.domain.User;
 import com.example.waa_first_demo.domain.dao.UserEntity;
 import com.example.waa_first_demo.util.Util;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;

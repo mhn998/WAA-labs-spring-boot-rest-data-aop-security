@@ -16,7 +16,7 @@ import java.util.List;
 @Table(name = "users") //user is reserved word in postgres
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserEntity {
+public class UserEntity { // could be named UserDAO
     @Id
     @GeneratedValue
     private long id;
