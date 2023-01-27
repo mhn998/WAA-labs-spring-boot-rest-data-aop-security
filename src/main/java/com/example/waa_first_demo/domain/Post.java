@@ -1,10 +1,10 @@
 package com.example.waa_first_demo.domain;
 
+import com.example.waa_first_demo.domain.dao.UserEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.List;
 
 @Data
@@ -17,20 +17,24 @@ public class Post {
     // second step
     @Id
     @GeneratedValue
-    long id;
+    private long id;
 
     @NonNull
-    String title;
+    private String title;
 
     @NonNull
-    String content;
+    private String content;
 
     @NonNull
-    String author;
+    private String author;
+
+    private long postCharactersLength;
+
+    private String device;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonBackReference
-    User user;
+    UserEntity user;
 
     @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "post_id")
@@ -52,6 +56,13 @@ public class Post {
         this.author = post.author;
     }
 
-
-
+    @Override
+    public String toString() {
+        return "Post{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", author='" + author + '\'' +
+                '}';
+    }
 }

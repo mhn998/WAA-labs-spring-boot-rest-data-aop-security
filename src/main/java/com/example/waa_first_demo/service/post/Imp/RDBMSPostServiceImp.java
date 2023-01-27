@@ -1,7 +1,9 @@
 package com.example.waa_first_demo.service.post.Imp;
 
 import com.example.waa_first_demo.domain.Post;
+import com.example.waa_first_demo.domain.User;
 import com.example.waa_first_demo.repo.post.Imp.RDBMSPostRepo;
+import com.example.waa_first_demo.repo.user.UserRepo;
 import com.example.waa_first_demo.service.post.PostService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Profile;
@@ -16,7 +18,8 @@ import java.util.stream.StreamSupport;
 @Profile("rdbms")
 public class RDBMSPostServiceImp implements PostService {
 
-    private RDBMSPostRepo rdbmsPostRepo;
+    private RDBMSPostRepo rdbmsPostRepo; // coding to an implementation direct here is not best practice
+    private UserRepo userRepo;
 
     public List<Post> findAll() {
         return StreamSupport.stream(rdbmsPostRepo.findAll().spliterator(), false)
@@ -33,11 +36,23 @@ public class RDBMSPostServiceImp implements PostService {
     }
 
     public Post savePostToUser(long userId , Post post) {
-        List<Post> userPosts = rdbmsPostRepo.findAllByUserId(userId);
+        User userById = userRepo.findById(userId).orElseThrow();
+        userById.getPosts().add(post);
         rdbmsPostRepo.save(post);
-        userPosts.add(post);
+        userRepo.save(userById);
 
-        return userPosts.get(userPosts.size() - 1);
+        return post;
+    }
+
+    @Override
+    public Post updatePostToUser(long userId, long postId, Post post) {
+        Post postForUser = rdbmsPostRepo.findByPost_IdEquals(userId, postId);
+
+        postForUser.setPost(post);
+
+        rdbmsPostRepo.save(postForUser);
+
+        return postForUser;
     }
 
     public Optional<Post> update(long id, Post post) {
@@ -58,7 +73,7 @@ public class RDBMSPostServiceImp implements PostService {
     }
 
     public List<Post> findAllByAuthor(String author) {
-        return null;
+        return rdbmsPostRepo.findAllByAuthorEquals(author);
     }
 
     @Override
@@ -75,5 +90,7 @@ public class RDBMSPostServiceImp implements PostService {
     public Post findPostByUser(long userId, long postId) {
         return rdbmsPostRepo.findByPost_IdEquals(userId, postId);
     }
+
+
 
 }

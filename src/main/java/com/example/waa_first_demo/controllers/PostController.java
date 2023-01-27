@@ -2,80 +2,53 @@ package com.example.waa_first_demo.controllers;
 
 
 import com.example.waa_first_demo.domain.Post;
-import com.example.waa_first_demo.domain.PostV2;
-import com.example.waa_first_demo.service.comment.CommentService;
+import com.example.waa_first_demo.domain.dto.PostDTO;
 import com.example.waa_first_demo.service.post.PostService;
+import com.example.waa_first_demo.util.Util;
 import lombok.AllArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/v1/users")
+@RequestMapping("api/v1/posts")
 @AllArgsConstructor
 public class PostController {
 
-    private final ModelMapper modelMapper;
     private PostService postService;
-    private CommentService commentService;
 
 
-    // after changing url to api/v1/users/posts this is wrong now.
-    // there is nothing called get all posts!
-    @GetMapping("posts")
+    @GetMapping
     public List<Post> findAll(){
         return postService.findAll();
     }
 
-    @GetMapping("/{userId}/posts")
-    public List<Post> findAllPostsByUser(@PathVariable long userId){
-        return postService
-                .findAllPostsByUser(userId);
-    }
 
-    @GetMapping("posts/{id}")
+    @GetMapping("{id}")
     public Post findById(@PathVariable long id){
         return postService.findById(id).orElseThrow();
     }
 
-    @GetMapping("{userId}/posts/{postId}")
-    public Post findPostById(@PathVariable long userId,
-                             @PathVariable long postId ){
-//        User user = restTemplate.getForObject("http://localhost/api/v1/users/{userId}", User.class);
 
-        return postService
-                .findPostByUser(userId, postId);
-    }
-
-    @PostMapping("{userId}/posts")
-    public Post save(@PathVariable long userId, @RequestBody Post post) {
-        return postService.savePostToUser(userId, post);
-    }
-
-    @DeleteMapping("posts/{id}")
+    @DeleteMapping("{id}")
     public void delete(@PathVariable int id) {
          postService.delete(id);
     }
 
-    @PutMapping("posts/{id}")
+    @PutMapping("{id}")
     public Post updatePost(@PathVariable long id, @RequestBody Post post) {
         return postService.update(id, post).orElseThrow();
     }
 
-    @GetMapping(name = "posts", headers = {"X-API-VERSION=v2"})
-    public List<PostV2> findAllByAuthor(@RequestParam String author) {
-        return mapToPostV2(postService.findAllByAuthor(author));
+    @GetMapping(headers = {"X-API-VERSION=v2"})
+    public List<PostDTO> findAllByAuthor(@RequestParam String author) {
+        List<Post> allByAuthor = postService.findAllByAuthor(author);
+        return Util.mapToListOf(allByAuthor, PostDTO.class);
     }
 
-    @GetMapping("posts/filter")
+    @GetMapping("filter")
     public List<Post> findAllPostWithTitle(@RequestParam String title) {
         return postService.findAllPostWithTitle(title);
-    }
-
-    public List<PostV2> mapToPostV2(List<Post> posts) {
-        return posts.stream().map(post -> modelMapper.map(post, PostV2.class)).collect(Collectors.toList());
     }
 
 }

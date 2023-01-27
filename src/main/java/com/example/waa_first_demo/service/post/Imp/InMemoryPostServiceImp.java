@@ -67,5 +67,10 @@ public class InMemoryPostServiceImp implements PostService {
         return null;
     }
 
+    @Override
+    public Post updatePostToUser(long userId, long postId, Post post) {
+        return null;
+    }
+
 
 }

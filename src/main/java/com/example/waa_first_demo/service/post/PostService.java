@@ -1,9 +1,7 @@
 package com.example.waa_first_demo.service.post;
 
 import com.example.waa_first_demo.domain.Post;
-import com.example.waa_first_demo.domain.Product;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,4 +26,6 @@ public interface PostService {
     Post findPostByUser(long userId, long postId);
 
     Post savePostToUser(long userId , Post post);
+
+    Post updatePostToUser(long userId, long postId, Post post);
 }
