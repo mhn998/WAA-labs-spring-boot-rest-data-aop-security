@@ -35,6 +35,9 @@ interface RDBMSCrudSpringUserRepoImp extends CrudRepository<UserEntity, Long> {
     int countAllById(long id);
 
 
-    // use criteriaQuery to filter posts on specific user which title contains __ and postLength >= ___ and device __
+    // needed for security for loadUserByName in UserDetailsService
+    UserEntity findByName(String name);
+
+    UserEntity findByEmail(String email);
 
 }

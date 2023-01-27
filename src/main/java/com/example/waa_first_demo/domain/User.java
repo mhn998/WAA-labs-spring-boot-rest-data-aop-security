@@ -9,17 +9,31 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@RequiredArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-//    @NonNull
+    @NonNull
     private String name;
+
+    @NonNull
+    private String email;
+
+    @NonNull
+    private String password;
+
+    @NonNull
+    private boolean enabled;
 
     List<Post> posts;
 
     Address address;
+
+    List<Role> roles;
+
+    List<UserToken> userTokens;
 
     public User(User user) {
         this.id = user.id;
@@ -38,13 +52,5 @@ public class User {
         this.posts = user.posts;
     }
 
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
 
 }

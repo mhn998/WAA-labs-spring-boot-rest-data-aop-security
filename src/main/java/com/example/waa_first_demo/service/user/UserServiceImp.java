@@ -114,4 +114,16 @@ class UserServiceImp implements UserService {
             return userRepo.findAllPostsByUserOnCriteria(id, title, postLength, device);
     }
 
+    // not necessary for security
+    @Override
+    public User findByName(String userName) {
+        return userRepo.findByName(userName);
+    }
+
+    // this is the one necessary for security
+    @Override
+    public User findByEmail(String email) {
+        return userRepo.finByEmail(email);
+    }
+
 }

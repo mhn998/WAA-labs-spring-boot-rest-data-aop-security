@@ -33,4 +33,9 @@ public interface UserRepo {
     List<Post> findAllPostsByUserOnCriteria(long id , String title, long postLength, String device);
 
 
+    User findByName(String name);
+
+    // needed for security
+    User finByEmail(String email);
+
 }
