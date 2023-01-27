@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserDetailsCustomized implements UserDetails {
+public class UserDetailsCustom implements UserDetails {
 
     private String email;
     @JsonIgnore
@@ -27,7 +27,7 @@ public class UserDetailsCustomized implements UserDetails {
 
     private boolean enabled;
 
-    public UserDetailsCustomized (User user) {
+    public UserDetailsCustom(User user) {
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.enabled = user.isEnabled();

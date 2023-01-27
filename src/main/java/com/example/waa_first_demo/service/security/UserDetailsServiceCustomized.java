@@ -1,7 +1,7 @@
 package com.example.waa_first_demo.service.security;
 
 import com.example.waa_first_demo.domain.User;
-import com.example.waa_first_demo.domain.security.UserDetailsCustomized;
+import com.example.waa_first_demo.domain.security.UserDetailsCustom;
 import com.example.waa_first_demo.repo.user.UserRepo;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +21,6 @@ public class UserDetailsServiceCustomized implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = Optional.ofNullable(userRepo.finByEmail(username));
-        return user.map(UserDetailsCustomized::new).get();
+        return user.map(UserDetailsCustom::new).get();
     }
 }
