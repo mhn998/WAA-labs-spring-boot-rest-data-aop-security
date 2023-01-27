@@ -4,5 +4,5 @@
 
 ### Generating Jwt token and refresh token but still we don't authorize on them
 
-### to be implemented, intercepting any requests with BEARER header ... 
+### to be implemented, intercepting any requests with BEARER header ...
 
