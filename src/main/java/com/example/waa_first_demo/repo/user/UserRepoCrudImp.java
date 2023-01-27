@@ -127,4 +127,14 @@ class UserRepoCrudImp implements UserRepo {
         return query.getResultList();
     }
 
+    @Override
+    public User findByName(String name) {
+        return Util.mapTo(rdbmsCrudSpringUserRepoImp.findByName(name), User.class);
+    }
+
+    @Override
+    public User finByEmail(String email) {
+        return Util.mapTo(rdbmsCrudSpringUserRepoImp.findByEmail(email), User.class);
+    }
+
 }

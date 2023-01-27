@@ -36,5 +36,8 @@ public interface UserService {
     // use criteriaQuery to filter posts on specific user which title contains __ and postLength >= ___ and device __
     List<Post> findAllPostsByUserOnCriteria(long id , String title, long postLength, String device);
 
+    User findByName(String userName);
+
+    User findByEmail(String userName);
 
 }
