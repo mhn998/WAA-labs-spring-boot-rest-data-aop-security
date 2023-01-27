@@ -7,9 +7,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
@@ -17,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfig  {
 
     private final UserDetailsService userDetailsService;
+
 
     // 1st step authentication
     // first thing as we know we need an instance of AuthManager which deals with AuthProviders to perform authenticate() with takes the Authentication object and yes we do it on *UsernamePasswordAuthenticationToken*->extends->AbstractAuthenticationToken->implements-> Authentication-> which extends Principal and Serializable,
@@ -62,5 +65,22 @@ public class SecurityConfig  {
 
         return daoAuthenticationProvider;
     }
+
+
+     //3rd step: authorization
+     //to work with authorization as you know we need to map paths to filter-mappings and httpSecurity instance follow the builder object which returns us a SecurityFilterChain
+     //what changed: now we get it from FilterChain not from WebSecurityConfigurerAdapter and override configure that return void and take the HttpSecurity
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+        return httpSecurity
+                .csrf().disable().cors()
+                .and().authorizeHttpRequests()
+                .requestMatchers("/api/v1/admin/*").hasRole("ADMIN")
+                .and().authorizeHttpRequests().requestMatchers("/api/v1/users/**").hasAnyRole("ADMIN", "USER")
+                .requestMatchers("/*").permitAll().
+                and().build();
+
+    }
+
 
 }

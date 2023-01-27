@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.security.SecureRandom;
@@ -50,8 +51,8 @@ public class AppConfig {
             System.out.println("muhannad = " + muhannad);
             System.out.println("mahmoud = " + mahmoud);
 
-            Role admin = new Role("ADMIN");
-            Role user = new Role("USER");
+            Role admin = new Role("ROLE_ADMIN");
+            Role user = new Role("ROLE_USER");
 
             userRepoSpringJPAImp.save(muhannad);
             userRepoSpringJPAImp.save(mahmoud);
@@ -64,6 +65,7 @@ public class AppConfig {
 
             roleRepo.save(admin);
             roleRepo.save(user);
+
         };
     }
 
