@@ -1,6 +1,7 @@
 package com.example.waa_first_demo.config;
 
 
+import com.example.waa_first_demo.filters.JwtFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,9 +10,11 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -19,7 +22,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig  {
 
     private final UserDetailsService userDetailsService;
-
+    private final JwtFilter jwtFilter;
 
     // 1st step authentication
     // first thing as we know we need an instance of AuthManager which deals with AuthProviders to perform authenticate() with takes the Authentication object and yes we do it on *UsernamePasswordAuthenticationToken*->extends->AbstractAuthenticationToken->implements-> Authentication-> which extends Principal and Serializable,
@@ -72,14 +75,19 @@ public class SecurityConfig  {
      //what changed: now we get it from FilterChain not from WebSecurityConfigurerAdapter and override configure that return void and take the HttpSecurity
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
+        AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry authorizationManagerRequestMatcherRegistry = httpSecurity
                 .csrf().disable().cors()
                 .and().authorizeHttpRequests()
-                .requestMatchers("/api/v1/admin/*").hasRole("ADMIN")
+                .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .and().authorizeHttpRequests().requestMatchers("/api/v1/users/**").hasAnyRole("ADMIN", "USER")
-                .requestMatchers("/*").permitAll().
-                and().build();
+                .requestMatchers("/api/v1/products/**", "/authenticate").permitAll();
 
+
+        // add our custom filter before specified filter
+        // we have to inject our custom jwt filter
+        httpSecurity.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // we want to add it before the filter of authentication. the one has the token is already authenticated
+
+        return httpSecurity.build();
     }
 
 
