@@ -1,33 +1,28 @@
 package com.example.waa_first_demo.domain;
 
-import jakarta.persistence.*;
+import com.example.waa_first_demo.domain.dao.UserEntity;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@RequiredArgsConstructor
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private long id;
 
-    @NonNull
     private String name;
 
-    @NonNull
     private String email;
 
-    @NonNull
     private String password;
 
-    @NonNull
     private boolean enabled;
 
-    List<Post> posts;
+    List<Post> posts = new ArrayList<>();
 
     Address address;
 
@@ -35,21 +30,19 @@ public class User {
 
     List<UserToken> userTokens;
 
-    public User(User user) {
-        this.id = user.id;
-        this.name = user.name;
-        this.posts = user.posts;
-    }
-
-    public User(int i, String name) {
-        this.id = i;
-        this.name = name;
-    }
-
     public void setUser(User user) {
         this.id = user.id;
         this.name = user.name;
         this.posts = user.posts;
+    }
+
+    public User(UserEntity userEntity) {
+        this.id = userEntity.getId();
+        this.name = userEntity.getName();
+        this.email = userEntity.getEmail();
+        this.password = userEntity.getPassword();
+        this.enabled = userEntity.isEnabled();
+        this.roles = userEntity.getRoles();
     }
 
 

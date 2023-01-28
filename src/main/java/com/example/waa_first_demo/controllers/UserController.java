@@ -87,13 +87,13 @@ public class UserController {
         return Util.mapToListOf(usersByPostsCountGreaterThanOne, UserDTO.class);
     }
 
-//    @GetMapping("filterBy")
-//    public List<UserDTO> findHavingMoreThanOnePostBy(@RequestParam Long postsCountGreaterThan){
-//        List<User> usersByPostsCountGreaterThan = userService
-//                .findByPosts_SizeGreaterThan(postsCountGreaterThan);
-//
-//        return Util.mapToListOf(usersByPostsCountGreaterThan, UserDTO.class);
-//    }
+    @GetMapping("filterBy")
+    public List<UserDTO> findHavingMoreThanOnePostBy(@RequestParam Long postsCountGreaterThan){
+        List<User> usersByPostsCountGreaterThan = userService
+                .findByPosts_SizeGreaterThan(postsCountGreaterThan);
+
+        return Util.mapToListOf(usersByPostsCountGreaterThan, UserDTO.class);
+    }
 
     @GetMapping("filterPostTitle")
     public List<UserDTO> findAllUsersWithPostTitle(@RequestParam String postTitle){
@@ -131,6 +131,8 @@ public class UserController {
         return Util.mapTo(postByUser, PostDTO.class );
     }
 
+
+    // no longer needed after adding an endpoint in post controller which takes userId from the token
     @PostMapping("{userId}/posts")
     public PostDTO savePostToUser(@PathVariable long userId, @RequestBody Post post) {
         Post postSaved = postService.savePostToUser(userId, post);

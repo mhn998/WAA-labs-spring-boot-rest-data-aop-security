@@ -2,12 +2,15 @@ package com.example.waa_first_demo.service.post.Imp;
 
 import com.example.waa_first_demo.domain.Post;
 import com.example.waa_first_demo.domain.User;
+import com.example.waa_first_demo.domain.dao.UserEntity;
 import com.example.waa_first_demo.repo.post.Imp.RDBMSPostRepo;
 import com.example.waa_first_demo.repo.user.UserRepo;
 import com.example.waa_first_demo.service.post.PostService;
+import com.example.waa_first_demo.util.Util;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,11 +38,16 @@ public class RDBMSPostServiceImp implements PostService {
         return rdbmsPostRepo.save(post);
     }
 
+    @Transactional
     public Post savePostToUser(long userId , Post post) {
         User userById = userRepo.findById(userId).orElseThrow();
-        userById.getPosts().add(post);
+
+        List<Post> posts = userById.getPosts();
+        posts.add(post);
+
+        post.setUser(Util.mapTo(userById, UserEntity.class));
+
         rdbmsPostRepo.save(post);
-        userRepo.save(userById);
 
         return post;
     }

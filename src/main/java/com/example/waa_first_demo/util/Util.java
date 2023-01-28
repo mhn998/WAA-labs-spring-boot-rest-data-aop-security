@@ -19,5 +19,4 @@ public class Util<E,V> {
     public static  <E,V> List<V> mapToListOf(List<E> mapFrom, Class<V> mapTo) {
         return mapFrom.stream().map(e -> staticModelMapper.map(e, mapTo)).collect(Collectors.toList());
     }
-
 }

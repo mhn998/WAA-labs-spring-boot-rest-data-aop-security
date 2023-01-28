@@ -42,13 +42,16 @@ class UserRepoCrudImp implements UserRepo {
 
     @Override
     public Optional<User> findById(long id) {
-        return Optional.of(Util.mapTo(rdbmsCrudSpringUserRepoImp.findById(id), User.class));
+        // problem
+        User user = new User(rdbmsCrudSpringUserRepoImp.findById(id).get()); ;
+
+        return Optional.of(user);
     }
 
     @Override
     public User save(User user) {
         UserEntity userEntity = Util.mapTo(user, UserEntity.class);
-        return Util.mapTo(rdbmsCrudSpringUserRepoImp.save(userEntity), User.class);
+        return new User(rdbmsCrudSpringUserRepoImp.save(userEntity));
     }
 
     @Override
@@ -134,7 +137,7 @@ class UserRepoCrudImp implements UserRepo {
 
     @Override
     public User finByEmail(String email) {
-        return Util.mapTo(rdbmsCrudSpringUserRepoImp.findByEmail(email), User.class);
+        return new User(rdbmsCrudSpringUserRepoImp.findByEmail(email));
     }
 
 }

@@ -21,6 +21,7 @@ public class UserDetailsServiceCustomized implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> user = Optional.ofNullable(userRepo.finByEmail(username));
+
         return user.map(UserDetailsCustom::new).get();
     }
 }
