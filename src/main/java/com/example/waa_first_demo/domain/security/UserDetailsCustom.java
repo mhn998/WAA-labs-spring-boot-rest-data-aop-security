@@ -2,6 +2,7 @@ package com.example.waa_first_demo.domain.security;
 
 import com.example.waa_first_demo.domain.Role;
 import com.example.waa_first_demo.domain.User;
+import com.example.waa_first_demo.domain.dao.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +21,8 @@ import java.util.stream.Collectors;
 @Data
 public class UserDetailsCustom implements UserDetails {
 
+    private Long id;
+
     private String email;
     @JsonIgnore
     private String password;
@@ -28,10 +31,19 @@ public class UserDetailsCustom implements UserDetails {
     private boolean enabled;
 
     public UserDetailsCustom(User user) {
+        this.id = user.getId();
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.enabled = user.isEnabled();
         this.roles = user.getRoles();
+    }
+
+    public UserDetailsCustom(UserEntity userEntity) {
+        this.id = userEntity.getId();
+        this.email = userEntity.getEmail();
+        this.password = userEntity.getPassword();
+        this.enabled = userEntity.isEnabled();
+        this.roles = userEntity.getRoles();
     }
 
 

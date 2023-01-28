@@ -80,7 +80,9 @@ public class SecurityConfig  {
                 .and().authorizeHttpRequests()
                 .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .and().authorizeHttpRequests().requestMatchers("/api/v1/users/**").hasAnyRole("ADMIN", "USER")
-                .requestMatchers("/api/v1/products/**", "/authenticate").permitAll();
+                .requestMatchers("/api/v1/products/**", "/authenticate").permitAll()
+                .and().authorizeHttpRequests().requestMatchers("/api/v1/posts/**").hasAnyRole("ADMIN", "USER")
+                .anyRequest().authenticated();
 
 
         // add our custom filter before specified filter
@@ -89,6 +91,8 @@ public class SecurityConfig  {
 
         return httpSecurity.build();
     }
+
+
 
 
 }

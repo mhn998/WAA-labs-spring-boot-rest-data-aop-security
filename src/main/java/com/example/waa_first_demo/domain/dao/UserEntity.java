@@ -13,28 +13,21 @@ import org.hibernate.annotations.FetchMode;
 import java.util.List;
 
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "users") //user is reserved word in postgres
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class UserEntity { // could be named UserDAO
     @Id
     @GeneratedValue
     private long id;
 
-    @NonNull
     private String name;
 
-    @NonNull
-    @Column(unique = true)
     private String email;
 
-    @NonNull
     private String password;
 
-    @NonNull
     private boolean enabled;
 
     @OneToMany(cascade = CascadeType.REMOVE)
@@ -55,4 +48,10 @@ public class UserEntity { // could be named UserDAO
     List<UserToken> userTokens;
 
 
+    public UserEntity(String name, String email, String password, boolean enabled) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.enabled = enabled;
+    }
 }
