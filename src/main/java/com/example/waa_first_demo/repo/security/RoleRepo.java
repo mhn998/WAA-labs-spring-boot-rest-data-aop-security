@@ -1,4 +1,4 @@
-package com.example.waa_first_demo.repo;
+package com.example.waa_first_demo.repo.security;
 
 import com.example.waa_first_demo.domain.Role;
 import org.springframework.data.repository.CrudRepository;

@@ -80,7 +80,7 @@ public class SecurityConfig  {
                 .and().authorizeHttpRequests()
                 .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .and().authorizeHttpRequests().requestMatchers("/api/v1/users/**").hasAnyRole("ADMIN", "USER")
-                .requestMatchers("/api/v1/products/**", "/authenticate").permitAll()
+                .requestMatchers("/auth/login","/api/v1/products/**").permitAll()
                 .and().authorizeHttpRequests().requestMatchers("/api/v1/posts/**").hasAnyRole("ADMIN", "USER")
                 .anyRequest().authenticated();
 

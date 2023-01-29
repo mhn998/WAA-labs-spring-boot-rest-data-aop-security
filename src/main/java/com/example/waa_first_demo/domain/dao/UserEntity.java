@@ -1,9 +1,6 @@
 package com.example.waa_first_demo.domain.dao;
 
-import com.example.waa_first_demo.domain.Address;
-import com.example.waa_first_demo.domain.Post;
-import com.example.waa_first_demo.domain.Role;
-import com.example.waa_first_demo.domain.UserToken;
+import com.example.waa_first_demo.domain.*;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
@@ -17,26 +14,34 @@ import java.util.List;
 @Entity
 @Table(name = "users") //user is reserved word in postgres
 @NoArgsConstructor
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserEntity { // could be named UserDAO
     @Id
     @GeneratedValue
     private long id;
 
+
+    @NonNull
     private String name;
 
+    @NonNull
     private String email;
 
+
+    @NonNull
     private String password;
 
+    @NonNull
     private boolean enabled;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
-    @Fetch(value = FetchMode.JOIN)
+    @OneToMany(cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @Fetch(value = FetchMode.SUBSELECT)
     @JoinColumn(name = "user_id")
     @JsonManagedReference
     List<Post> posts;
 
-    @OneToOne(mappedBy = "user")
+    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonManagedReference
     Address address;
 
@@ -44,14 +49,15 @@ public class UserEntity { // could be named UserDAO
     @JsonManagedReference
     List<Role> roles;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-    List<UserToken> userTokens;
 
-
-    public UserEntity(String name, String email, String password, boolean enabled) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-        this.enabled = enabled;
+    public UserEntity(User user) {
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.password = user.getPassword();
+        this.enabled = user.isEnabled();
+        this.posts = user.getPosts();
+        this.address = user.getAddress();
+        this.roles = user.getRoles();
     }
+
 }
