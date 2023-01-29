@@ -11,7 +11,7 @@ import java.util.List;
 
 
 @Repository //not necessary
-interface RDBMSCrudSpringUserRepoImp extends CrudRepository<UserEntity, Long> {
+public interface RDBMSCrudSpringUserRepoImp extends CrudRepository<UserEntity, Long> {
 
     // decoupled and remove public access modifier
 

@@ -5,8 +5,10 @@ import com.example.waa_first_demo.domain.dao.UserEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 
 @Data
@@ -24,9 +26,11 @@ public class Role {
     @NonNull
     String name;
 
-    Timestamp createdAt;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
-    Timestamp updatedAt;
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

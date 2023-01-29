@@ -2,6 +2,7 @@ package com.example.waa_first_demo.util;
 
 
 import io.jsonwebtoken.*;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -12,9 +13,28 @@ import java.util.function.Function;
 
 @Component
 public class JwtUtil {
-    private static final String secret = "top-secret";
-    private static final long expiration = 5 * 60 * 60 * 60;
-    private static final long refreshExpiration = 5 * 60 * 60 * 60 * 60;
+
+
+    private static String jwtSecret;
+    private static int expiration;
+    private static int refreshExpiration;
+
+
+    @Value("${security.app.jwtSecret}")
+    public void setJwtSecret(String jwtSec) {
+        jwtSecret = jwtSec;
+    }
+
+    @Value("${security.app.refreshTokenExpiration}")
+    public void setRefreshExpiration(int refreshExp) {
+       refreshExpiration = refreshExp;
+    }
+
+    @Value("${security.app.accessTokenExpiration}")
+    public void setExpiration(int exp) {
+        expiration = exp;
+    }
+
 
     // this wil extract a claim from a token, its used in the methods above to get the username and date
     // TODO When this detects the access token is expired it will throw and exception.
@@ -27,7 +47,7 @@ public class JwtUtil {
 
     private static Claims getAllClaimsFromToken(String token) {
         return Jwts.parser()
-                .setSigningKey(secret)
+                .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
     }
@@ -53,12 +73,13 @@ public class JwtUtil {
 
 
     private static String doGenerateToken(Map<String, Object> claims, String subject) {
+        System.out.println("jwtSecret = " + jwtSecret);
         return Jwts.builder()
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
 
@@ -68,7 +89,7 @@ public class JwtUtil {
                 .setSubject(subject)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
 
@@ -77,13 +98,13 @@ public class JwtUtil {
                 .setSubject(email)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + refreshExpiration))
-                .signWith(SignatureAlgorithm.HS512, secret)
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
 
     public static String getSubject(String token) {
         return Jwts.parser()
-                .setSigningKey(secret)
+                .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
@@ -92,7 +113,7 @@ public class JwtUtil {
     public static boolean validateToken(String token) {
         try {
             Jwts.parser()
-                    .setSigningKey(secret)
+                    .setSigningKey(jwtSecret)
                     .parseClaimsJws(token);
             return true;
         } catch (SignatureException e) {
@@ -110,14 +131,11 @@ public class JwtUtil {
     }
 
 
-
-
-
     public String doGenerateRefreshToken(Map<String, Object> claims, String subject) {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
-                .signWith(SignatureAlgorithm.HS512, secret).compact();
+                .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
     }
 
 
@@ -125,7 +143,7 @@ public class JwtUtil {
         String result = null;
         try {
             result = Jwts.parser()
-                    .setSigningKey(secret)
+                    .setSigningKey(jwtSecret)
                     .parseClaimsJws(token)
                     .getBody()
                     .getSubject();

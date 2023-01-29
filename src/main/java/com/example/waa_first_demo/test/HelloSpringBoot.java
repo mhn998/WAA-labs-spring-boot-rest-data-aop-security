@@ -14,7 +14,7 @@ import java.util.Arrays;
 
 //@RestController
 //@RequestMapping("/")
-@Configuration
+//@Configuration
 public class HelloSpringBoot implements ApplicationContextAware {
 
 

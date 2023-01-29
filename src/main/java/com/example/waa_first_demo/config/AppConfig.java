@@ -3,7 +3,7 @@ package com.example.waa_first_demo.config;
 
 import com.example.waa_first_demo.domain.Role;
 import com.example.waa_first_demo.domain.dao.UserEntity;
-import com.example.waa_first_demo.repo.RoleRepo;
+import com.example.waa_first_demo.repo.security.RoleRepo;
 import com.example.waa_first_demo.repo.post.Imp.RDBMSPostRepo;
 import com.example.waa_first_demo.repo.user.UserRepo;
 import com.example.waa_first_demo.repo.user.UserRepoSpringJPAImp;
@@ -12,7 +12,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.security.SecureRandom;
