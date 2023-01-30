@@ -1,0 +1,30 @@
+version: '3.1'
+services:
+    app:
+      image: 'docker-spring-boot-postgres:latest'
+      build:
+        context: .
+      container_name: waa_app
+      depends_on:
+        - db
+      environment:
+        - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/postgres
+        - SPRING_DATASOURCE_USERNAME=postgres
+        - SPRING_DATASOURCE_PASSWORD=postgres
+        - SPRING_JPA_HIBERNATE_DDL_AUTO=create-drop
+      ports:
+        - "8080:8080"
+
+    db:
+      image: postgres
+      container_name: waa_postgres
+      restart: always
+      environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postgres
+        POSTGRES_DB: postgres
+        PGDATA: /var/lib/postgresql/data/pgdata
+      volumes:
+        - ./data:/var/lib/postgresql/data
+      ports:
+        - "5432:5432"
