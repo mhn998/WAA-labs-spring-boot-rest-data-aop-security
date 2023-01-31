@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+  labels:
+    name: webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+        - name: webapp
+          image: 15719981948/spring_boot_postgres:v1
+          ports:
+            - containerPort: 8080
+          env: # names of the args match properties file
+            - name: SPRING_DATASOURCE_PASSWORD
+              value: pg123
+            - name: SPRING_DATASOURCE_URL
+              value: jdbc:postgresql://postgresql:5432/waa?useSSL=false # host should same name of the service(postgresql)
+            - name: SPRING_DATASOURCE_USERNAME
+              value: postgres
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp
+  labels:
+    name: webapp
+spec:
+  type: NodePort
+  selector:
+    app: webapp
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+      nodePort: 30100 # to be exposed externally
